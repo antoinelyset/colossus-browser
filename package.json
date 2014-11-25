@@ -1,0 +1,30 @@
+{
+  "name": "colossus",
+  "version": "0.0.0",
+  "description": "JavaScript Client for the PubSub and Presence system Colossus.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "faye": "~1"
+  },
+  "keywords": [
+    "pubsub",
+    "presence",
+    "push"
+  ],
+  "author": "antoinelyset+github@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "broccoli": "~0.13.3",
+    "broccoli-eslint": "0.0.5",
+    "broccoli-concat": "0.0.12",
+    "broccoli-merge-trees": "~0.2.1",
+    "broccoli-jshint": "~0.5.3",
+    "broccoli-static-compiler": "~0.2.1",
+    "broccoli-filter": "~0.1.10",
+    "react-tools": "~0.12.1",
+    "broccoli-uglify-js": "~0.1.3"
+  }
+}

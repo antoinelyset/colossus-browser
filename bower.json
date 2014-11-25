@@ -1,0 +1,25 @@
+{
+  "name": "colossus",
+  "version": "0.0.0",
+  "authors": [
+    "antoinelyset <antoinelyset+github@gmail.com>"
+  ],
+  "description": "JavaScript Client for the PubSub and Presence system Colossus.",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "pubsub",
+    "presence",
+    "push"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
