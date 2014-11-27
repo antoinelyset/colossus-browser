@@ -36,6 +36,14 @@ var Colossus = function(url: string, userId: string, userToken: string) {
   this.fayeClient.subscribe(this.userUrl, (message) => {
     this.emit("message", message);
   });
+
+  this.fayeClient.on("transport:down", () => {
+    this.emit("statusChanged", "disconnected");
+  });
+
+  this.fayeClient.on("transport:up", () => {
+    this.emit("statusChanged", "connected");
+  });
 };
 
 Colossus.prototype.heartbeat = function() {
