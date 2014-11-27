@@ -1,9 +1,13 @@
 // @flow
 declare var Faye: any;
-declare var EventEmitter: any;
 var Colossus = function(url: string, userId: string, userToken: string) {
-  this.VERSION           = "0.0.0";
-  this.heartbeatInterval = 2000;
+  this.VERSION            = "0.0.0";
+  this.HEARTBEAT_INTERVAL = 2000; // Milliseconds
+  this.AWAY_TIMEOUT       = 30; //Seconds
+  this.AWAY_INTERVAL      = 1000; //Milliseconds
+  this.awaySeconds        = 0;
+  this.status             = "active";
+  this.previousStatus     = "disconnected";
 
   this.userId    = userId;
   this.userToken = userToken;
@@ -20,21 +24,40 @@ var Colossus = function(url: string, userId: string, userToken: string) {
     }
   });
 
+  document.addEventListener("click",     () => { this.awaySeconds = 0; });
+  document.addEventListener("mousemove", () => { this.awaySeconds = 0; });
+  document.addEventListener("keypress",  () => { this.awaySeconds = 0; });
+
   window.addEventListener("beforeunload", () => { this.disconnect(); });
+
   this.heartbeat();
+  this.awayChecker();
 
   this.fayeClient.subscribe(this.userUrl, (message) => {
-    if(!this.messageCallback){ return; }
-    message = JSON.parse(message);
-    this.messageCallback.apply(this, [message]);
+    this.emit("message", message);
   });
 };
 
 Colossus.prototype.heartbeat = function() {
   clearTimeout(this.heartbeatTimer);
   this.heartbeatTimer = setTimeout(() => {
-    this.publishStatus("active").then(() => { this.heartbeat(); });
-  }, this.heartbeatInterval);
+    this.publishStatus(this.status).then(() => { this.heartbeat(); });
+  }, this.HEARTBEAT_INTERVAL);
+};
+
+Colossus.prototype.awayChecker = function() {
+  clearTimeout(this.awayTimer);
+  this.awayTimer = setTimeout(() => {
+    this.awaySeconds = this.awaySeconds + 1;
+    if (this.awaySeconds >= this.AWAY_TIMEOUT) {
+      this.status = "away";
+    } else {
+      this.status = "active";
+    }
+    if (this.previousStatus !== this.status) { this.emit("statusChanged", this.status); }
+    this.previousStatus = this.status;
+    this.awayChecker();
+  }, this.AWAY_INTERVAL);
 };
 
 Colossus.prototype.publishStatus = function(givenStatus: string) {
@@ -48,15 +71,11 @@ Colossus.prototype.disconnect = function() {
   }
   this.publishStatus("disconnected").then(() => {
     this.fayeClient.disconnect();
+    this.emit("statusChanged", "disconnected");
   }, () => {
     this.fayeClient.disconnect();
+    this.emit("statusChanged", "disconnected");
   });
 };
 
-Colossus.prototype.onMessage = function(callback) {
-  this.messageCallback = callback;
-};
-
-Colossus.prototype.unbindMessage = function() {
-  this.messageCallback = null;
-};
+Faye.extend(Colossus.prototype, Faye.EventEmitter.prototype);
