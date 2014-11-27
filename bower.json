@@ -4,9 +4,9 @@
   "authors": [
     "antoinelyset <antoinelyset+github@gmail.com>"
   ],
+  "main": "dist/colossus.js",
   "description": "JavaScript Client for the PubSub and Presence system Colossus.",
   "moduleType": [
-    "amd",
     "globals"
   ],
   "keywords": [
