@@ -2588,19 +2588,21 @@ var Colossus = function(url        , userId        , userToken        ) {
 
   window.addEventListener("beforeunload", function()  { this.disconnect(); }.bind(this));
 
-  this.heartbeat();
-  this.awayChecker();
-
-  this.fayeClient.subscribe(this.userUrl, function(message)  {
-    this.emit("message", message);
-  }.bind(this));
-
   this.fayeClient.on("transport:down", function()  {
     this.emit("statusChanged", "disconnected");
   }.bind(this));
 
   this.fayeClient.on("transport:up", function()  {
     this.emit("statusChanged", "connected");
+  }.bind(this));
+
+  var subscription = this.fayeClient.subscribe(this.userUrl, function(message)  {
+    this.emit("message", message);
+  }.bind(this));
+
+  subscription.then(function()  {
+    this.heartbeat();
+    this.awayChecker();
   }.bind(this));
 };
 

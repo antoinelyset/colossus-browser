@@ -30,19 +30,21 @@ var Colossus = function(url: string, userId: string, userToken: string) {
 
   window.addEventListener("beforeunload", () => { this.disconnect(); });
 
-  this.heartbeat();
-  this.awayChecker();
-
-  this.fayeClient.subscribe(this.userUrl, (message) => {
-    this.emit("message", message);
-  });
-
   this.fayeClient.on("transport:down", () => {
     this.emit("statusChanged", "disconnected");
   });
 
   this.fayeClient.on("transport:up", () => {
     this.emit("statusChanged", "connected");
+  });
+
+  var subscription = this.fayeClient.subscribe(this.userUrl, (message) => {
+    this.emit("message", message);
+  });
+
+  subscription.then(() => {
+    this.heartbeat();
+    this.awayChecker();
   });
 };
 
