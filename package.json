@@ -1,6 +1,6 @@
 {
   "name": "colossus",
-  "version": "0.0.0",
+  "version": "0.5.0",
   "description": "JavaScript Client for the PubSub and Presence system Colossus.",
   "main": "index.js",
   "scripts": {

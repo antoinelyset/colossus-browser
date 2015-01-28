@@ -42,7 +42,7 @@ var Colossus = function(url: string, userId: string, userToken: string) {
   });
 
   subscription.then(() => {
-    this.heartbeat();
+    this.publishStatus(this.status).then(() => { this.heartbeat(); });
     this.awayChecker();
   });
 };
@@ -87,7 +87,7 @@ Colossus.prototype.disconnect = function() {
   });
 };
 
-Colossus.VERSION            = "0.4.0";
+Colossus.VERSION            = "0.5.0";
 Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
 Colossus.AWAY_TIMEOUT       = 30; //Seconds
 Colossus.AWAY_INTERVAL      = 1000; //Milliseconds

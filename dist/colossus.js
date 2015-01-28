@@ -2600,7 +2600,7 @@ var Colossus = function(url        , userId        , userToken        ) {
   }.bind(this));
 
   subscription.then(function()  {
-    this.heartbeat();
+    this.publishStatus(this.status).then(function()  { this.heartbeat(); }.bind(this));
     this.awayChecker();
   }.bind(this));
 };
@@ -2645,7 +2645,7 @@ Colossus.prototype.disconnect = function() {
   }.bind(this));
 };
 
-Colossus.VERSION            = "0.4.0";
+Colossus.VERSION            = "0.5.0";
 Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
 Colossus.AWAY_TIMEOUT       = 30; //Seconds
 Colossus.AWAY_INTERVAL      = 1000; //Milliseconds
