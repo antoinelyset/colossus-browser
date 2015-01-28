@@ -1,10 +1,9 @@
 // @flow
 declare var Faye: any;
 var Colossus = function(url: string, userId: string, userToken: string) {
-  this.VERSION            = "0.0.0";
-  this.HEARTBEAT_INTERVAL = 2000; // Milliseconds
-  this.AWAY_TIMEOUT       = 30; //Seconds
-  this.AWAY_INTERVAL      = 1000; //Milliseconds
+  this.heartbeatInterval = Colossus.HEARTBEAT_INTERVAL; // Milliseconds
+  this.awayTimeout       = Colossus.AWAY_TIMEOUT; //Seconds
+  this.awayInterval      = Colossus.AWAY_INTERVAL; //Milliseconds
   this.awaySeconds        = 0;
   this.status             = "active";
   this.previousStatus     = "disconnected";
@@ -52,14 +51,14 @@ Colossus.prototype.heartbeat = function() {
   clearTimeout(this.heartbeatTimer);
   this.heartbeatTimer = setTimeout(() => {
     this.publishStatus(this.status).then(() => { this.heartbeat(); });
-  }, this.HEARTBEAT_INTERVAL);
+  }, this.heartbeatInterval);
 };
 
 Colossus.prototype.awayChecker = function() {
   clearTimeout(this.awayTimer);
   this.awayTimer = setTimeout(() => {
     this.awaySeconds = this.awaySeconds + 1;
-    if (this.awaySeconds >= this.AWAY_TIMEOUT) {
+    if (this.awaySeconds >= this.awayTimeout) {
       this.status = "away";
     } else {
       this.status = "active";
@@ -67,7 +66,7 @@ Colossus.prototype.awayChecker = function() {
     if (this.previousStatus !== this.status) { this.emit("statusChanged", this.status); }
     this.previousStatus = this.status;
     this.awayChecker();
-  }, this.AWAY_INTERVAL);
+  }, this.awayInterval);
 };
 
 Colossus.prototype.publishStatus = function(givenStatus: string) {
@@ -87,5 +86,10 @@ Colossus.prototype.disconnect = function() {
     this.emit("statusChanged", "disconnected");
   });
 };
+
+Colossus.VERSION            = "0.4.0";
+Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
+Colossus.AWAY_TIMEOUT       = 30; //Seconds
+Colossus.AWAY_INTERVAL      = 1000; //Milliseconds
 
 Faye.extend(Colossus.prototype, Faye.EventEmitter.prototype);
