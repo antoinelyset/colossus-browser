@@ -2559,10 +2559,9 @@ Faye.Transport.register('callback-polling', Faye.Transport.JSONP);
 // @flow
                       
 var Colossus = function(url        , userId        , userToken        ) {
-  this.VERSION            = "0.0.0";
-  this.HEARTBEAT_INTERVAL = 2000; // Milliseconds
-  this.AWAY_TIMEOUT       = 30; //Seconds
-  this.AWAY_INTERVAL      = 1000; //Milliseconds
+  this.heartbeatInterval = Colossus.HEARTBEAT_INTERVAL; // Milliseconds
+  this.awayTimeout       = Colossus.AWAY_TIMEOUT; //Seconds
+  this.awayInterval      = Colossus.AWAY_INTERVAL; //Milliseconds
   this.awaySeconds        = 0;
   this.status             = "active";
   this.previousStatus     = "disconnected";
@@ -2610,14 +2609,14 @@ Colossus.prototype.heartbeat = function() {
   clearTimeout(this.heartbeatTimer);
   this.heartbeatTimer = setTimeout(function()  {
     this.publishStatus(this.status).then(function()  { this.heartbeat(); }.bind(this));
-  }.bind(this), this.HEARTBEAT_INTERVAL);
+  }.bind(this), this.heartbeatInterval);
 };
 
 Colossus.prototype.awayChecker = function() {
   clearTimeout(this.awayTimer);
   this.awayTimer = setTimeout(function()  {
     this.awaySeconds = this.awaySeconds + 1;
-    if (this.awaySeconds >= this.AWAY_TIMEOUT) {
+    if (this.awaySeconds >= this.awayTimeout) {
       this.status = "away";
     } else {
       this.status = "active";
@@ -2625,7 +2624,7 @@ Colossus.prototype.awayChecker = function() {
     if (this.previousStatus !== this.status) { this.emit("statusChanged", this.status); }
     this.previousStatus = this.status;
     this.awayChecker();
-  }.bind(this), this.AWAY_INTERVAL);
+  }.bind(this), this.awayInterval);
 };
 
 Colossus.prototype.publishStatus = function(givenStatus        ) {
@@ -2645,6 +2644,11 @@ Colossus.prototype.disconnect = function() {
     this.emit("statusChanged", "disconnected");
   }.bind(this));
 };
+
+Colossus.VERSION            = "0.2.0";
+Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
+Colossus.AWAY_TIMEOUT       = 30; //Seconds
+Colossus.AWAY_INTERVAL      = 1000; //Milliseconds
 
 Faye.extend(Colossus.prototype, Faye.EventEmitter.prototype);
 
