@@ -2649,7 +2649,7 @@ Colossus.prototype.disconnect = function() {
   }.bind(this));
 };
 
-Colossus.VERSION            = "0.5.0";
+Colossus.VERSION            = "0.6.0";
 Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
 Colossus.AWAY_TIMEOUT       = 30; //Seconds
 Colossus.AWAY_INTERVAL      = 1000; //Milliseconds
