@@ -43,6 +43,10 @@ var Colossus = function(url: string, userId: string, userToken: string) {
 
   subscription.then(() => {
     this.publishStatus(this.status).then(() => { this.heartbeat(); });
+
+    this.on('statusChanged', () => {
+      this.publishStatus(this.status).then(() => { this.heartbeat(); });
+    });
     this.awayChecker();
   });
 };

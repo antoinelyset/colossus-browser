@@ -2601,6 +2601,10 @@ var Colossus = function(url        , userId        , userToken        ) {
 
   subscription.then(function()  {
     this.publishStatus(this.status).then(function()  { this.heartbeat(); }.bind(this));
+
+    this.on('statusChanged', function()  {
+      this.publishStatus(this.status).then(function()  { this.heartbeat(); }.bind(this));
+    }.bind(this));
     this.awayChecker();
   }.bind(this));
 };
