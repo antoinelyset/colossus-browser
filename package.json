@@ -1,8 +1,8 @@
 {
   "name": "colossus-browser",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "JavaScript Client for the PubSub and Presence system Colossus.",
-  "main": "index.js",
+  "main": "dist/colossus.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

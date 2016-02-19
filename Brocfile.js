@@ -18,7 +18,6 @@ hintedColossus = jshint(colossus, {disableTestGenerator: true});
 src            = mergeTrees(["src/wrapper", colossus, "node_modules", hintedColossus]);
 src            = concat(src, {
   inputFiles: [
-    "faye/browser/faye-browser.js",
     "header.js",
     "colossus.js",
     "footer.js"

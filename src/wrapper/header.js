@@ -1,16 +1,9 @@
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define([], factory);
+    define(['faye/browser/faye-browser'], factory);
   } else {
     // Browser globals
-    root.Colossus = factory();
+    root.Colossus = factory(root.Faye);
   }
-}(this, function () {
-  var root = this;
-
-  var previousModule = root.module;
-  root.module        = undefined;
-
-  var previousFaye   = root.Faye;
-  var Faye           = root.Faye;
+}(this, function (Faye) {
