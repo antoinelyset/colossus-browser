@@ -101,7 +101,7 @@ Colossus.prototype.disconnect = function() {
   }.bind(this));
 };
 
-Colossus.VERSION            = "0.7.0";
+Colossus.VERSION            = "0.8.1";
 Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
 Colossus.AWAY_TIMEOUT       = 30; //Seconds
 Colossus.AWAY_INTERVAL      = 1000; //Milliseconds
