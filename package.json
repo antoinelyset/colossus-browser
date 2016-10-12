@@ -4,10 +4,12 @@
   "description": "JavaScript Client for the PubSub and Presence system Colossus.",
   "main": "dist/colossus.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "rimraf dist && broccoli build dist",
+    "start": "broccoli serve"
   },
-  "dependencies": {
-    "faye": "~1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antoinelyset/colossus-browser"
   },
   "keywords": [
     "pubsub",
@@ -17,14 +19,18 @@
   "author": "antoinelyset+github@gmail.com",
   "license": "MIT",
   "devDependencies": {
-    "broccoli": "~0.13.3",
-    "broccoli-eslint": "0.0.5",
-    "broccoli-concat": "0.0.12",
-    "broccoli-merge-trees": "~0.2.1",
-    "broccoli-jshint": "~0.5.3",
-    "broccoli-static-compiler": "~0.2.1",
-    "broccoli-filter": "~0.1.10",
-    "react-tools": "~0.12.1",
-    "broccoli-uglify-js": "~0.1.3"
+    "babel-preset-es2015-native-modules": "6.9.4",
+    "broccoli": "0.16.9",
+    "broccoli-babel-transpiler": "6.0.0-alpha.2",
+    "broccoli-cli": "1.0.0",
+    "broccoli-funnel": "1.0.7",
+    "broccoli-jshint": "2.1.0",
+    "broccoli-merge-trees": "1.1.4",
+    "broccoli-rollup": "1.0.3",
+    "faye": "1.2.3",
+    "rimraf": "2.5.4",
+    "rollup": "0.36.3",
+    "rollup-plugin-commonjs": "5.0.5",
+    "rollup-plugin-node-resolve": "2.0.0"
   }
 }

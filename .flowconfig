@@ -1,7 +1,0 @@
-[ignore]
-.*/wrapper/.*
-.*/node_modules/.*
-.*/tmp/.*
-
-
-[include]

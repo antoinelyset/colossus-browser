@@ -1,29 +1,35 @@
-var broccoli    = require("broccoli");
-var pickFiles   = require("broccoli-static-compiler");
-var jshint      = require('broccoli-jshint');
-var mergeTrees  = require("broccoli-merge-trees");
-var concat      = require("broccoli-concat");
-var reactFilter = require("./broccoli_filters/react");
-var uglifyJavaScript = require('broccoli-uglify-js');
+var Jshint = require('broccoli-jshint');
+var Babel = require('broccoli-babel-transpiler');
+var Funnel = require('broccoli-funnel');
+var mergeTrees = require('broccoli-merge-trees');
+var Rollup = require('broccoli-rollup');
+var nodeResolveRollup = require('rollup-plugin-node-resolve');
+var commonjsRollup = require('rollup-plugin-commonjs');
 
-var src      = "src";
-var colossus = pickFiles(src, {
-  srcDir: "/",
-  files: ["*.js"],
-  destDir: "/"
+var hintedColossus = new Jshint('src', {disableTestGenerator: true});
+var colossus = new Babel('src', {
+  presets: ['es2015-native-modules']
+});
+var faye = new Funnel('node_modules/faye', {
+  destDir: 'node_modules/faye'
 });
 
-colossus       = reactFilter(colossus, {harmony: true, stripTypes: true});
-hintedColossus = jshint(colossus, {disableTestGenerator: true});
-src            = mergeTrees(["src/wrapper", colossus, "node_modules", hintedColossus]);
-src            = concat(src, {
-  inputFiles: [
-    "header.js",
-    "colossus.js",
-    "footer.js"
-  ],
-  outputFile: "/colossus.js"
-});
+var src = mergeTrees([faye, hintedColossus, colossus]);
 
-//src = uglifyJavaScript(src);
-module.exports = src;
+module.exports = new Rollup(src, {
+  rollup: {
+    entry: 'colossus',
+    plugins: [
+      nodeResolveRollup({
+        browser: true,
+        main: true
+      }),
+      commonjsRollup()
+    ],
+    targets: [{
+      dest: 'colossus.js',
+      moduleName: 'Colossus',
+      format: 'umd'
+    }]
+  }
+});
