@@ -95,7 +95,7 @@ class Colossus extends EventEmitter {
   }
 }
 
-Colossus.VERSION            = "0.8.2";
+Colossus.VERSION            = "0.9.0";
 Colossus.HEARTBEAT_INTERVAL = 2000; // Milliseconds
 Colossus.AWAY_TIMEOUT       = 30; //Seconds
 Colossus.AWAY_INTERVAL      = 1000; //Milliseconds

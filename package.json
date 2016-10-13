@@ -1,6 +1,6 @@
 {
   "name": "colossus-browser",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "JavaScript Client for the PubSub and Presence system Colossus.",
   "main": "dist/colossus.js",
   "scripts": {
